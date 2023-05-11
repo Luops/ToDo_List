@@ -9,9 +9,11 @@ import { ITask } from "../interfaces/Task";
 
 type Props = {
   taskList: ITask[];
+  handleDelete(id: number): void;
+  openModal: () => void;
 };
 
-const TaskList = ({ taskList }: Props) => {
+const TaskList = ({ taskList, handleDelete, openModal }: Props) => {
   return (
     <>
       {taskList.length > 0 ? (
@@ -25,10 +27,17 @@ const TaskList = ({ taskList }: Props) => {
               <p>Dificuldade: {task.difficulty}</p>
             </div>
             <div className="flex flex-col items-center gap-5 mr-4">
-              <i className="text-lg cursor-pointer text-white bg-[#282c34] p-[8px] hover:text-[#61dafb] ease-in-out duration-300">
+              <i className="text-lg cursor-pointer text-white bg-[#282c34] p-[8px] hover:text-[#61dafb] ease-in-out duration-300"
+              onClick={openModal}
+              >
                 <FaPencilAlt />
               </i>
-              <i className="text-2xl cursor-pointer text-white bg-[#282c34] p-[5px] hover:text-[#61dafb] ease-in-out duration-300">
+              <i
+                className="text-2xl cursor-pointer text-white bg-[#282c34] p-[5px] hover:text-[#61dafb] ease-in-out duration-300"
+                onClick={() => {
+                  handleDelete(task.id);
+                }}
+              >
                 <MdDeleteForever />
               </i>
             </div>
