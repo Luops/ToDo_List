@@ -7,27 +7,45 @@ type Props = {
   btnText: string;
   taskList: ITask[];
   setTaskList?: React.Dispatch<React.SetStateAction<ITask[]>>; //Alterar um state de uma lista. Enviar quando precisar (?)
+  task?: ITask | null;
+  handleUpdate?(id: number, title: string, difficulty: number): void;
 };
 
-const TaskForm = ({ btnText, taskList, setTaskList }: Props) => {
+const TaskForm = ({
+  btnText,
+  taskList,
+  setTaskList,
+  task,
+  handleUpdate,
+}: Props) => {
   const [id, setId] = useState<number>(0);
   const [title, setTitle] = useState<string>("");
   const [difficulty, setDifficulty] = useState<number>(0);
+
+  useEffect(() => {
+    if (task) {
+      setId(task.id);
+      setDifficulty(task.difficulty);
+      setTitle(task.title);
+    }
+  }, [task]); //Quando clicar no botão de editar, chama os dados da tarefa (relação ao id)
 
   //Função de adicionar
   const addTaskHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Não deixa enviar o formulário em branco
 
-    const id = Math.floor(Math.random() * 1000);
+    if (handleUpdate) {
+      handleUpdate(id, title, difficulty);
+    } else {
+      const id = Math.floor(Math.random() * 1000);
 
-    const newTask: ITask = { id, title, difficulty };
+      const newTask: ITask = { id, title, difficulty };
 
-    setTaskList!([...taskList, newTask]); // Unido todas os afazeres
+      setTaskList!([...taskList, newTask]); // Unido todas os afazeres
 
-    setTitle("");
-    setDifficulty(0);
-
-    console.log(taskList);
+      setTitle("");
+      setDifficulty(0);
+    }
   };
 
   //Função de coletar os dados

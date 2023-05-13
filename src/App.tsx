@@ -12,6 +12,7 @@ import { ITask } from "./interfaces/Task";
 
 function App() {
   const [taskList, setTaskList] = useState<ITask[]>([]); //Array dos tarefas
+  const [taskToUpdate, setTaskToUpdate] = useState<ITask | null>(null); //Gerenciamento da tarefa a ser atulizada
 
   const deleteTask = (id: number) => {
     //Deletar tarefa
@@ -29,8 +30,21 @@ function App() {
     setIsOpen(false);
   };
 
-  const openModal = () => {
+  const openModal = (task: ITask): void => {
     setIsOpen(true);
+    setTaskToUpdate(task);
+  };
+
+  const updateTask = (id: number, title: string, difficulty: number) => {
+    const updatedTask: ITask = { id, title, difficulty }; // Item a ser atualiza na lista de tarefas
+
+    const updatedItems = taskList.map((task) => {
+      return task.id === updatedTask.id ? updatedTask : task; // verificar cada tarefa da list, e ao achar vai trocar os dados pela a atualizada.
+    });
+
+    setTaskList(updatedItems);
+
+    setIsOpen(false)
   };
 
   return (
@@ -38,7 +52,14 @@ function App() {
       {isOpen && (
         <Modal
           closeModal={closeModal}
-          children={<TaskForm btnText="Editar Tarefa" taskList={taskList} />}
+          children={
+            <TaskForm
+              btnText="Editar Tarefa"
+              taskList={taskList}
+              task={taskToUpdate}
+              handleUpdate={updateTask}
+            />
+          }
         />
       )}
       <Header />

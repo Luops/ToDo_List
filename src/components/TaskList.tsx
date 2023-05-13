@@ -10,7 +10,7 @@ import { ITask } from "../interfaces/Task";
 type Props = {
   taskList: ITask[];
   handleDelete(id: number): void;
-  openModal: () => void;
+  openModal: (task: ITask) => void;
 };
 
 const TaskList = ({ taskList, handleDelete, openModal }: Props) => {
@@ -28,7 +28,7 @@ const TaskList = ({ taskList, handleDelete, openModal }: Props) => {
             </div>
             <div className="flex flex-col items-center gap-5 mr-4">
               <i className="text-lg cursor-pointer text-white bg-[#282c34] p-[8px] hover:text-[#61dafb] ease-in-out duration-300"
-              onClick={openModal}
+              onClick={() => openModal(task)} /*Vai pugar a tarefa por causa do map e a key={task.id} */
               >
                 <FaPencilAlt />
               </i>

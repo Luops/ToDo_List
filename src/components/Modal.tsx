@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 
-import TaskList from "./TaskList";
-
 interface Props {
   children: React.ReactNode; // Padrão
   closeModal: () => void
